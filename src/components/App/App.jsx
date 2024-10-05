@@ -6,6 +6,7 @@ import { api } from "../../services/api";
 
 import SearchBar from "../SearchBar";
 import ImageGallery from "../ImageGallery";
+import ImageModal from "../ImageModal";
 import Loader from "../Loader";
 import LoadMoreBtn from "../LoadMoreBtn";
 import ErrorMessage from "../ErrorMessage";
@@ -19,6 +20,7 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [scrollValue, setScrollValue] = useState(0);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [cureentImage, setCureentImage] = useState(null);
 
   const galleryRef = useRef(null);
 
@@ -82,16 +84,32 @@ export default function App() {
 
   const nextPage = () => setPage((prev) => prev + 1);
 
+  const handleCloseModal = () => setCureentImage(null);
+
+  const handleOpenModal = (image) => setCureentImage(image);
+
   return (
     <>
       <SearchBar onSubmit={handleSearchPhotos} />
-      <ImageGallery ref={galleryRef} images={images} />
+
+      <ImageGallery
+        ref={galleryRef}
+        images={images}
+        onOpenModal={handleOpenModal}
+      />
 
       <div className={css["action-bar"]}>
         {loading && <Loader />}
         {showLoadMoreBtn && <LoadMoreBtn onClick={nextPage} />}
         {errorMessage && <ErrorMessage helperText={errorMessage} />}
       </div>
+
+      <ImageModal
+        isOpen={!!cureentImage}
+        imgAlt={cureentImage?.imgAlt}
+        imgUrl={cureentImage?.imgRegularUrl}
+        onClose={handleCloseModal}
+      />
 
       <Toaster position="top-right" />
     </>

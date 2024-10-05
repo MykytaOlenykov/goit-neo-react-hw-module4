@@ -5,7 +5,7 @@ import ImageCard from "../ImageCard";
 
 import css from "./ImageGallery.module.css";
 
-const ImageGallery = forwardRef(({ images }, ref) => {
+const ImageGallery = forwardRef(({ images, onOpenModal }, ref) => {
   return (
     <ul className={css.list} ref={ref}>
       {images.map(({ id, alt, smallUrl, regularUrl }) => (
@@ -14,6 +14,7 @@ const ImageGallery = forwardRef(({ images }, ref) => {
             imgAlt={alt}
             imgRegularUrl={regularUrl}
             imgSmallUrl={smallUrl}
+            onOpenModal={onOpenModal}
           />
         </li>
       ))}
@@ -32,6 +33,7 @@ ImageGallery.propTypes = {
       regularUrl: PropTypes.string.isRequired,
     })
   ),
+  onOpenModal: PropTypes.func.isRequired,
 };
 
 export default ImageGallery;
